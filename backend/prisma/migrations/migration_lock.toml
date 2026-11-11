@@ -1,0 +1,3 @@
+# Este archivo lo gestiona Prisma automáticamente.
+# Debe subirse al control de versiones (Git) junto con las migraciones.
+provider = "postgresql"

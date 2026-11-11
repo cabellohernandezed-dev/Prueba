@@ -1,0 +1,43 @@
+// =============================================================================
+// Esquema de la base de datos (Prisma ORM)
+// -----------------------------------------------------------------------------
+// Los nombres de campo usan snake_case para coincidir 1 a 1 con los que pide
+// el enunciado (isbn, titulo, anio_publicacion, ...). Así evitamos capas de
+// traducción y la API devuelve exactamente los mismos campos.
+// =============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Usuario registrado. Solo los usuarios autenticados pueden usar el catálogo.
+model User {
+  id            String   @id @default(uuid())
+  nombre        String
+  email         String   @unique
+  password_hash String
+  created_at    DateTime @default(now())
+
+  @@map("users")
+}
+
+/// Libro del catálogo del club de lectura.
+model Book {
+  id               String   @id @default(uuid())
+  isbn             String   @unique
+  titulo           String
+  autor            String
+  genero           String
+  anio_publicacion Int
+  paginas          Int
+  sinopsis         String?
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  @@map("books")
+}
