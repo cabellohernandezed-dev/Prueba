@@ -1,0 +1,82 @@
+# =============================================================================
+# Docker Compose — levanta TODO el proyecto con un único comando:
+#     docker compose up --build
+#
+# Servicios:
+#   - postgres  : base de datos PostgreSQL con persistencia en volumen
+#   - backend   : API REST (Express + Prisma). Aplica migraciones y seed al arrancar
+#   - frontend  : aplicación Next.js (App Router)
+#
+# Las variables se toman del archivo ".env" de la raíz (ver .env.example).
+# Si no existe ".env", se usan los valores por defecto indicados tras los ":-".
+# =============================================================================
+name: reading-club
+
+services:
+  # ---------------------------------------------------------------------------
+  # Base de datos
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: reading-club-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-readingclub}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-readingclub_pwd}
+      POSTGRES_DB: ${POSTGRES_DB:-readingclub}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      # Volumen con nombre: los datos persisten aunque el contenedor se elimine.
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-readingclub} -d ${POSTGRES_DB:-readingclub}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ---------------------------------------------------------------------------
+  # Backend (API REST)
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+    container_name: reading-club-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      # El host "postgres" es el nombre del servicio dentro de la red de Compose.
+      DATABASE_URL: postgresql://${POSTGRES_USER:-readingclub}:${POSTGRES_PASSWORD:-readingclub_pwd}@postgres:5432/${POSTGRES_DB:-readingclub}?schema=public
+      JWT_SECRET: ${JWT_SECRET:-change_me_in_production_super_secret_key}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1d}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+    ports:
+      - "${BACKEND_PORT:-4000}:4000"
+    depends_on:
+      postgres:
+        # Espera a que la base de datos esté lista antes de arrancar el backend.
+        condition: service_healthy
+
+  # ---------------------------------------------------------------------------
+  # Frontend (Next.js)
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # NEXT_PUBLIC_* se incrusta en el bundle en tiempo de compilación.
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000/api}
+    container_name: reading-club-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000/api}
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
