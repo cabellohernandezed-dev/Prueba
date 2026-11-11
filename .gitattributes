@@ -1,0 +1,13 @@
+# Normaliza los finales de línea a LF en el repositorio.
+# Esto evita errores tipo "/bin/sh^M" en scripts .sh ejecutados dentro de Docker
+# cuando el proyecto se edita en Windows.
+* text=auto eol=lf
+
+# Scripts de shell: siempre LF
+*.sh text eol=lf
+
+# Archivos binarios
+*.png binary
+*.ico binary
+*.woff binary
+*.woff2 binary
