@@ -5,6 +5,7 @@ import { env } from './config/env.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 import { notFoundHandler } from './middlewares/not-found.middleware.js';
 import { authRouter } from './routes/auth.routes.js';
+import { bookRouter } from './routes/book.routes.js';
 
 /**
  * Fábrica de la aplicación Express.
@@ -30,6 +31,7 @@ export function createApp() {
   app.use(cookieParser());
 
   app.use('/api/auth', authRouter);
+  app.use('/api/books', bookRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
