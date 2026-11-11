@@ -21,7 +21,9 @@ model User {
   nombre        String
   email         String   @unique
   password_hash String
+  role          String   @default("consulta")
   created_at    DateTime @default(now())
+  reading_progress ReadingProgress[]
 
   @@map("users")
 }
@@ -38,6 +40,21 @@ model Book {
   sinopsis         String?
   created_at       DateTime @default(now())
   updated_at       DateTime @updatedAt
+  reading_progress ReadingProgress[]
 
   @@map("books")
+}
+
+/// Estado personal de lectura de un usuario para cada libro.
+model ReadingProgress {
+  id         String   @id @default(uuid())
+  user_id    String
+  book_id    String
+  estado     String   @default("pendiente")
+  updated_at DateTime @updatedAt
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  book       Book     @relation(fields: [book_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, book_id])
+  @@map("reading_progress")
 }

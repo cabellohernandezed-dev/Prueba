@@ -7,7 +7,10 @@ export type User = {
   id: string;
   nombre: string;
   email: string;
+  role: 'admin' | 'consulta';
 };
+
+export type ReadingStatus = 'pendiente' | 'leyendo' | 'leído';
 
 export type Book = {
   id: string;
@@ -18,6 +21,7 @@ export type Book = {
   anio_publicacion: number;
   paginas: number;
   sinopsis: string | null;
+  estado_lectura: ReadingStatus;
   created_at: string;
   updated_at: string;
 };

@@ -48,7 +48,9 @@ export default function ProtectedLayout({
             Club de Lectura
           </Link>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">{user.nombre}</span>
+            <span className="text-sm text-gray-600">
+              {user.nombre} ({user.role})
+            </span>
             <button
               type="button"
               onClick={handleLogout}

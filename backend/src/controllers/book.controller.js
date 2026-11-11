@@ -7,15 +7,31 @@ import { asyncHandler } from '../utils/async-handler.js';
  */
 
 /** GET /api/books — lista todos los libros. */
-export const list = asyncHandler(async (_req, res) => {
-  const books = await bookService.listBooks();
-  res.status(200).json({ books });
+export const list = asyncHandler(async (req, res) => {
+  const result = await bookService.listBooks(req.query, req.user.id);
+  res.status(200).json(result);
+});
+
+/** GET /api/books/genres — géneros disponibles para el filtro. */
+export const listGenres = asyncHandler(async (_req, res) => {
+  const genres = await bookService.listGenres();
+  res.status(200).json({ genres });
 });
 
 /** GET /api/books/:id — detalle de un libro. */
 export const getById = asyncHandler(async (req, res) => {
-  const book = await bookService.getBookById(req.params.id);
+  const book = await bookService.getBookById(req.params.id, req.user.id);
   res.status(200).json({ book });
+});
+
+/** PATCH /api/books/:id/reading-status — actualiza el estado personal. */
+export const updateReadingStatus = asyncHandler(async (req, res) => {
+  const progress = await bookService.updateReadingStatus(
+    req.params.id,
+    req.user.id,
+    req.body.estado,
+  );
+  res.status(200).json({ readingProgress: progress });
 });
 
 /** POST /api/books — crea un libro. */

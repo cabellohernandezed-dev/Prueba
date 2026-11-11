@@ -33,3 +33,10 @@ export const bookSchema = z.object({
     .max(2000, 'La sinopsis no puede superar los 2000 caracteres.')
     .optional(),
 });
+
+export const readingStatusSchema = z.object({
+  estado: z.enum(
+    ['pendiente', 'leyendo', 'leído'],
+    'El estado debe ser pendiente, leyendo o leído.',
+  ),
+});

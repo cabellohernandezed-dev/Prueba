@@ -6,12 +6,14 @@ import { useParams, useRouter } from 'next/navigation';
 import { BookForm } from '@/components/BookForm';
 import type { BookFormValues } from '@/components/BookForm';
 import { ErrorMessage } from '@/components/ErrorMessage';
+import { useAuth } from '@/context/auth-context';
 import { apiFetch } from '@/lib/api';
 import type { Book } from '@/lib/types';
 
 /** Página para editar un libro existente (reutiliza el mismo formulario). */
 export default function EditBookPage() {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
   const router = useRouter();
   const [book, setBook] = useState<Book | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -55,6 +57,10 @@ export default function EditBookPage() {
         <ErrorMessage message={error ?? 'El libro no existe.'} />
       </section>
     );
+  }
+
+  if (user?.role !== 'admin') {
+    return <p className="text-gray-700">Solo un usuario admin puede editar libros.</p>;
   }
 
   return (

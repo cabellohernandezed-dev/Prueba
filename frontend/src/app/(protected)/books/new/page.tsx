@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 import { BookForm } from '@/components/BookForm';
 import type { BookFormValues } from '@/components/BookForm';
 import { apiFetch } from '@/lib/api';
+import { useAuth } from '@/context/auth-context';
 
 /** Página para crear un libro nuevo. */
 export default function NewBookPage() {
   const router = useRouter();
+  const { user } = useAuth();
 
   async function handleCreate(values: BookFormValues) {
     await apiFetch('/books', {
@@ -16,6 +18,10 @@ export default function NewBookPage() {
       body: JSON.stringify(values),
     });
     router.push('/books');
+  }
+
+  if (user?.role !== 'admin') {
+    return <p className="text-gray-700">Solo un usuario admin puede crear libros.</p>;
   }
 
   return (

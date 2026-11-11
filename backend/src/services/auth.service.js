@@ -20,7 +20,12 @@ function normalizeEmail(email) {
 
 /** Devuelve solo los datos públicos del usuario (NUNCA el hash de la contraseña). */
 function toPublicUser(user) {
-  return { id: user.id, nombre: user.nombre, email: user.email };
+  return {
+    id: user.id,
+    nombre: user.nombre,
+    email: user.email,
+    role: user.role,
+  };
 }
 
 /**

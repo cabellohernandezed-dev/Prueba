@@ -26,20 +26,59 @@ function toBookData(input) {
   };
 }
 
-/** Lista todos los libros. */
-export function listBooks() {
-  return bookRepository.findAll();
+/** Busca y pagina libros; search revisa título y autor. */
+export async function listBooks(filters, userId) {
+  const page = Number(filters.page ?? 1);
+  const pageSize = Number(filters.pageSize ?? 10);
+
+  if (!Number.isInteger(page) || page < 1) {
+    throw new AppError('La página debe ser un entero mayor que 0.', 400);
+  }
+  if (!Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100) {
+    throw new AppError('El tamaño de página debe estar entre 1 y 100.', 400);
+  }
+
+  const { books, total } = await bookRepository.findAll({
+    search: String(filters.search ?? '').trim(),
+    genre: String(filters.genre ?? '').trim(),
+    page,
+    pageSize,
+    userId,
+  });
+
+  return {
+    books,
+    pagination: {
+      page,
+      pageSize,
+      total,
+      totalPages: Math.ceil(total / pageSize),
+    },
+  };
+}
+
+export async function listGenres() {
+  const genres = await bookRepository.findGenres();
+  return genres.map(({ genero }) => genero);
 }
 
 /** Devuelve un libro por id o lanza 404 si no existe. */
-export async function getBookById(id) {
-  const book = await bookRepository.findById(id);
+export async function getBookById(id, userId) {
+  const book = userId
+    ? await bookRepository.findByIdForUser(id, userId)
+    : await bookRepository.findById(id);
 
   if (!book) {
     throw new AppError('El libro no existe.', 404);
   }
 
   return book;
+}
+
+/** Cambia el estado de lectura personal de un usuario. */
+export async function updateReadingStatus(bookId, userId, estado) {
+  await getBookById(bookId);
+  return bookRepository.saveReadingStatus(userId, bookId, estado);
 }
 
 /** Crea un libro validando que el ISBN no esté repetido (409). */

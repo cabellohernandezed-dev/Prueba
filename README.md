@@ -1,8 +1,8 @@
 # Club de Lectura — Prueba Técnica Full Stack
 
 Aplicación web para gestionar el catálogo de libros de un club de lectura.
-Incluye **autenticación** (registro, inicio y cierre de sesión) y un **CRUD
-completo de libros**.
+Incluye **autenticación**, permisos por rol, búsqueda, filtros, paginación y
+seguimiento personal del estado de lectura.
 
 Todo el proyecto se levanta con **un único comando**:
 
@@ -110,8 +110,11 @@ El script de seed crea las siguientes credenciales:
 |-------|-------|
 | **Email** | `demo@readingclub.com` |
 | **Contraseña** | `demo1234` |
+| **Rol** | `admin` |
 
-También carga **5 libros** de ejemplo para probar el listado, el detalle y la edición.
+También carga **5 libros** de ejemplo para probar el listado y los filtros.
+La cuenta demo tiene rol `admin`; las cuentas creadas desde el formulario de
+registro tienen rol `consulta`.
 
 > El seed es **idempotente** (`upsert`): se puede ejecutar muchas veces sin duplicar datos.
 
@@ -130,21 +133,34 @@ Base de la API: `http://localhost:4000/api`
 | `POST` | `/api/auth/logout` | Cierra la sesión (elimina la cookie). | `200` |
 | `GET` | `/api/auth/me` | Devuelve el usuario de la sesión actual. | `200`, `401` |
 
+Roles:
+
+- `admin`: puede crear, consultar, editar y eliminar libros.
+- `consulta`: puede consultar libros y actualizar su propio estado de lectura.
+- El rol se asigna en el backend; el registro público siempre crea cuentas `consulta`.
+
 ### Libros (`/api/books`) — **todas requieren sesión**
 
 | Método | Ruta | Descripción | Códigos |
 |--------|------|-------------|---------|
-| `GET` | `/api/books` | Lista todos los libros. | `200`, `401` |
+| `GET` | `/api/books` | Lista libros; acepta `search`, `genre`, `page` y `pageSize`. La búsqueda revisa título y autor. | `200`, `400`, `401` |
+| `GET` | `/api/books/genres` | Devuelve géneros disponibles para filtrar. | `200`, `401` |
 | `GET` | `/api/books/:id` | Detalle de un libro. | `200`, `401`, `404` |
-| `POST` | `/api/books` | Crea un libro. | `201`, `400`, `401`, `409` |
-| `PUT` | `/api/books/:id` | Actualiza un libro. | `200`, `400`, `401`, `404`, `409` |
-| `DELETE` | `/api/books/:id` | Elimina un libro. | `204`, `401`, `404` |
+| `PATCH` | `/api/books/:id/reading-status` | Actualiza el estado personal: `pendiente`, `leyendo` o `leído`. | `200`, `400`, `401`, `404` |
+| `POST` | `/api/books` | Crea un libro (solo `admin`). | `201`, `400`, `401`, `403`, `409` |
+| `PUT` | `/api/books/:id` | Actualiza un libro (solo `admin`). | `200`, `400`, `401`, `403`, `404`, `409` |
+| `DELETE` | `/api/books/:id` | Elimina un libro (solo `admin`). | `204`, `401`, `403`, `404` |
+
+`GET /api/books` responde `{ books, pagination }`. La paginación usa `page`
+(desde 1) y `pageSize` (de 1 a 100, por defecto 10). El progreso de lectura
+se guarda por combinación usuario/libro y no se comparte con otros usuarios.
 
 ### Significado de los códigos HTTP
 
 - `200` / `201` / `204`: operación correcta.
 - `400` **Bad Request**: los datos enviados no pasan la validación (por ejemplo, un año futuro o páginas ≤ 0).
 - `401` **Unauthorized**: no hay sesión válida, o las credenciales son incorrectas.
+- `403` **Forbidden**: el usuario inició sesión, pero su rol no permite esa acción.
 - `404` **Not Found**: el recurso no existe.
 - `409` **Conflict**: ya existe un registro con ese dato único (email o ISBN).
 
