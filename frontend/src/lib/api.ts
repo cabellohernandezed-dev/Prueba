@@ -8,8 +8,10 @@
  * cuando ocurre algún error en las peticiones.
  */
 
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api';
+// Las peticiones se hacen al mismo origen del frontend y el servidor de Next.js
+// las reenvía al backend mediante un proxy (ver next.config.mjs). Así la cookie
+// de sesión es de primera parte y funciona aunque el backend esté en otro dominio.
+const API_URL = '/api';
 
 /** Error que incluye el código HTTP, útil para reaccionar a un 401, 404, etc. */
 export class ApiError extends Error {
