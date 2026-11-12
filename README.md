@@ -593,3 +593,42 @@ docker compose down -v && docker compose up --build
 ```
 
 Recuerda que `docker compose down -v` borra el volumen de la base de datos. Si lo ejecutas, perderás los datos que se habían guardado.
+
+---
+
+## 12. Despliegue 
+
+El proyecto se subió a **Railway**, que es una plataforma en la nube donde puedo tener el backend, el frontend y la base de datos todo junto sin tener que configurar un servidor manualmente.
+
+### Dónde quedó
+
+- **Frontend (la app que se ve en el navegador):** https://frontend-production-b2a71cbe.up.railway.app
+- **Backend (la API):** https://backend-production-c5e5a2f5.up.railway.app/api
+- **Base de datos:** PostgreSQL creado dentro de Railway y gestionado por Railway.
+
+### Cómo lo subí 
+
+1. Instalé el programa de Railway en la computadora con `npm install -g @railway/cli`.
+2. Inicié sesión con `railway login` y me mandó a autorizar en el navegador.
+3. Creé un proyecto en Railway llamado `reading-club`.
+4. Dentro de ese proyecto creé tres servicios:
+   - **Postgres** = la base de datos.
+   - **backend** = usa el `Dockerfile` de la carpeta `backend/`.
+   - **frontend** = usa el `Dockerfile` de la carpeta `frontend/`.
+5. Configuré las variables de entorno que necesita cada servicio (las de `.env.example`), por ejemplo `DATABASE_URL`, `JWT_SECRET`, `NEXT_PUBLIC_API_URL` y `CORS_ORIGIN`.
+6. Subí cada parte con `railway up` (desde la carpeta del backend y desde la del frontend, por separado).
+7. A cada servicio le pedí una dirección pública con `railway domain`.
+
+### Un detalle importante de la sesión
+
+Como el frontend y el backend quedaron en direcciones distintas (dos subdominios de `up.railway.app`), la cookie de inicio de sesión no se enviaba entre ellos y no se podía entrar.
+
+Para arreglarlo, hice que el frontend use un **proxy**: ahora el navegador solo habla con el frontend (en `/api`) y el propio Next.js reenvía esas peticiones al backend. Así la cookie es "del mismo sitio" y funciona. Los archivos que cambié para esto son `frontend/next.config.mjs` y `frontend/src/lib/api.ts`.
+
+### Usuario de prueba (Admin)
+- Correo: `cabello@gmail.com`
+- Contraseña: `Lalo12345`
+- Rol: `admin`
+
+### Usuario de prueba (Consulta)
+Solo registrarse
