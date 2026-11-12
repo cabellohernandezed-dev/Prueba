@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
-// URL del backend en el servidor. Next.js la usa como destino del proxy de /api,
-// de modo que el navegador solo habla con el frontend y la cookie de sesión
-// viaja como cookie de primera parte (evita bloqueos entre dominios distintos).
+// Dirección del backend. Next.js la utiliza para enviar las peticiones de la API.
+// Así, el navegador se comunica con el frontend y la cookie de sesión se mantiene
+// en el mismo sitio, evitando problemas al trabajar con diferentes dominios.
 const backendUrl =
   process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api';
 
