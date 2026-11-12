@@ -1,10 +1,36 @@
+## Nota sobre el uso de Inteligencia Artificial
+=============================================================================================================================================================
+Durante el desarrollo de este proyecto utilicé TRAE, un editor de código que incluye herramientas de IA. 
+
+Trabajé junto con un agente de IA para desarrollar algunas partes del proyecto, resolver dudas y revisar el código.
+
+También agregué comentarios en los archivos para explicar qué hace cada parte y cómo se relaciona con las demás. 
+
+Esto me ayudó a comprender mejor el funcionamiento del proyecto.
+
+Para el README, primero reuní y redacté la información por mi cuenta. 
+
+Después utilicé la IA para completar algunas explicaciones y hacer que fueran más fáciles de entender.
+
+Considero que la IA fue una herramienta de apoyo, pero no hizo todo el trabajo por mí. 
+
+Antes de utilizarla, investigué y analicé lo que necesitaba hacer. También procuré revisar sus respuestas, entender el código que proponía y 
+
+comprobar que funcionara correctamente.
+
+Creo que la IA puede ser de mucha ayuda durante el desarrollo de un proyecto, siempre que sepamos utilizarla y
+
+entendamos lo que estamos construyendo.
+
+=============================================================================================================================================================
+
 # Club de Lectura — Prueba Técnica Full Stack
 
-Aplicación web para gestionar el catálogo de libros de un club de lectura.
-Incluye **autenticación**, permisos por rol, búsqueda, filtros, paginación y
-seguimiento personal del estado de lectura.
+Este proyecto es una aplicación web para administrar los libros de un club de lectura.
 
-Todo el proyecto se levanta con **un único comando**:
+Permite registrar usuarios, iniciar sesión, consultar libros, buscar por título o autor, filtrar por género y llevar un registro personal del estado de lectura.
+
+Para iniciar todo el proyecto, solo necesitas ejecutar este comando:
 
 ```bash
 docker compose up --build
@@ -12,32 +38,53 @@ docker compose up --build
 
 ---
 
-## 1. Stack tecnológico y por qué
+## 1. Tecnologías utilizadas
 
-| Capa | Tecnología | Por qué |
-|------|------------|---------|
-| **Frontend** | React 19 + **Next.js 16 (App Router)** + TypeScript | Next.js da enrutado por carpetas, un entorno de producción listo para Docker (`output: standalone`) y TypeScript añade seguridad de tipos al desarrollo. |
-| **Backend** | Node.js + **Express 4** (ESM) | Express es el framework más extendido, ligero y fácil de leer. Se usa el sistema de módulos ESM moderno (`import`/`export`). |
-| **Base de datos** | **PostgreSQL 16** | Base de datos relacional robusta y estándar. El ISBN y el email son campos únicos, algo que encaja perfectamente con las restricciones de una BD relacional. |
-| **ORM** | **Prisma 5** | Esquema declarativo, migraciones versionadas y cliente tipado. Hace que el acceso a datos sea explícito y evita SQL disperso por el código. |
-| **Autenticación** | **bcrypt** + **JWT en cookie httpOnly** | Las contraseñas nunca se guardan en claro (bcrypt) y el token viaja en una cookie `httpOnly`, fuera del alcance de JavaScript y protegida de XSS. |
-| **Validación** | **Zod 4** | Valida los datos de entrada en el backend con mensajes de error claros. |
-| **Contenedores** | **Docker** + **Docker Compose** | Un `Dockerfile` por servicio y un `docker-compose.yml` que orquesta todo, con migraciones y seed automáticos. |
-| **Estilos** | **Tailwind CSS 3** | Utilidades predecibles para una interfaz limpia sin añadir complejidad. |
+Tecnologías utilizadas
+Durante el desarrollo del proyecto se utilizaron las siguientes tecnologías:
+
+-Frontend – React 19, Next.js 16 y TypeScript
+
+Se utilizaron para crear las páginas y los elementos con los que interactúa el usuario. TypeScript ayuda a organizar y controlar los tipos de datos.
+
+-Backend – Node.js y Express 4
+
+Se encargan de recibir las peticiones del frontend y realizar las operaciones del sistema.
+
+-Base de datos – PostgreSQL 16
+
+Se utiliza para guardar la información de los usuarios, los libros y sus estados de lectura.
+
+-ORM – Prisma 5
+
+Permite consultar, guardar y modificar la información de la base de datos desde el código.
+
+-Autenticación – bcrypt y JWT
+
+bcrypt se utiliza para proteger las contraseñas y JWT para mantener la sesión del usuario mediante una cookie httpOnly.
+
+-Validación – Zod 4
+
+Se utiliza para revisar que los datos recibidos sean correctos antes de procesarlos.
+
+-Contenedores – Docker y Docker Compose
+
+Permiten iniciar el frontend, el backend y la base de datos de manera conjunta.
+
+-Estilos – Tailwind CSS 3
+
+Se utiliza para dar diseño y formato a las páginas del proyecto.
 
 ---
 
-## 2. Requisitos previos
+## 2. Antes de iniciar
 
-- **Docker Desktop** (con Docker Compose v2). Es lo único imprescindible.
-- **Git** (para clonar el repositorio).
+Para ejecutar el proyecto necesitas:
 
-Opcional, si quieres ejecutar los servicios fuera de Docker:
+- **Docker Desktop**, con Docker Compose v2.
+- **Git**, para descargar el repositorio.
 
-- **Node.js 20+** y **npm 10+**
-- Una instancia de **PostgreSQL 16**
-
-Comprueba que Docker funciona:
+Para comprobar que Docker está instalado y funcionando, abre una terminal y ejecuta:
 
 ```bash
 docker --version
@@ -46,125 +93,232 @@ docker compose version
 
 ---
 
-## 3. Cómo levantar el proyecto
+## 3. Cómo iniciar el proyecto
 
-### Paso 1 — Clonar el repositorio
+### Paso 1. Descargar el proyecto
+
+Clona el repositorio y entra en la carpeta:
 
 ```bash
 git clone <URL-del-repositorio>
 cd Prueba-tecnica-Fullstack
 ```
 
-### Paso 2 — Crear el archivo `.env` de la raíz
+### Paso 2. Crear el archivo `.env`
 
-El proyecto trae un `.env.example` documentado. Cópialo:
+En la carpeta principal del proyecto encontrarás el archivo `.env.example`.
+
+Haz una copia y ponle el nombre `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-> En Windows (PowerShell): `Copy-Item .env.example .env`
+Si utilizas Windows PowerShell, ejecuta:
 
-> **Nota:** no es obligatorio para arrancar (el `docker-compose.yml` tiene
-> valores por defecto), pero se recomienda crearlo para poder cambiar el
-> `JWT_SECRET` y las credenciales de la base de datos.
+```powershell
+Copy-Item .env.example .env
+```
 
-### Paso 3 — Levantar todo con Docker Compose
+Este archivo sirve para configurar algunos datos del proyecto, como las credenciales de la base de datos y la clave que se utiliza para las sesiones.
+
+No es obligatorio crearlo para iniciar el proyecto, porque Docker Compose ya tiene algunos valores por defecto. Sin embargo, se recomienda tenerlo para poder cambiar esos valores cuando sea necesario.
+
+### Paso 3. Iniciar los servicios
+
+Desde la carpeta principal del proyecto, ejecuta:
 
 ```bash
 docker compose up --build
 ```
 
-Durante el arranque, el contenedor del backend hace **automáticamente**:
+Este comando construye las imágenes y después inicia los servicios.
 
-1. Aplica las **migraciones** pendientes a la base de datos (`prisma migrate deploy`).
-2. Ejecuta el **seed** (usuario y libros de prueba, de forma idempotente).
-3. Arranca la API.
+Cuando inicia el backend, se realizan estos pasos automáticamente:
 
-### Paso 4 — Abrir la aplicación
+1. Se aplican las migraciones pendientes de Prisma a la base de datos.
+2. Se ejecuta el seed, que agrega el usuario y los libros de prueba.
+3. Se inicia la API del backend.
 
-| Servicio | URL |
-|----------|-----|
-| Frontend | http://localhost:3000 |
-| API (backend) | http://localhost:4000/api |
+El seed puede ejecutarse más de una vez sin crear registros duplicados.
+
+### Paso 4. Abrir la aplicación
+
+Cuando los servicios hayan iniciado, puedes entrar desde el navegador:
+
+-Frontend
+
+http://localhost:3000
+
+Es la dirección donde se encuentra la página principal del proyecto.
+
+-Backend (API)
+
+http://localhost:4000/api
+
+Es la dirección donde se reciben las peticiones y se realizan las operaciones del sistema.
 
 ### Detener el proyecto
+
+Para detener los contenedores, ejecuta:
 
 ```bash
 docker compose down
 ```
 
-Para borrar también los datos de la base de datos (volumen):
+Si también quieres borrar los datos guardados en el volumen de la base de datos, ejecuta:
 
 ```bash
 docker compose down -v
 ```
 
----
-
-## 4. Usuario de prueba
-
-El script de seed crea las siguientes credenciales:
-
-| Campo | Valor |
-|-------|-------|
-| **Email** | `demo@readingclub.com` |
-| **Contraseña** | `demo1234` |
-| **Rol** | `admin` |
-
-También carga **5 libros** de ejemplo para probar el listado y los filtros.
-La cuenta demo tiene rol `admin`; las cuentas creadas desde el formulario de
-registro tienen rol `consulta`.
-
-> El seed es **idempotente** (`upsert`): se puede ejecutar muchas veces sin duplicar datos.
+**Importante:** el segundo comando elimina los datos guardados en la base de datos. Úsalo solo si realmente quieres empezar desde cero.
 
 ---
 
-## 5. Endpoints de la API
+## 4. Usuario para realizar pruebas
 
-Base de la API: `http://localhost:4000/api`
+Al iniciar el proyecto, el seed crea una cuenta de prueba con estos datos:
 
-### Autenticación (`/api/auth`)
+Usuario de prueba
+El proyecto cuenta con un usuario de prueba para poder iniciar sesión y revisar las funciones del sistema.
+- Correo: demo@readingclub.com
+- Contraseña: demo1234
+- Rol: admin (administrador)
 
-| Método | Ruta | Descripción | Códigos |
-|--------|------|-------------|---------|
-| `POST` | `/api/auth/register` | Registra un usuario y crea su sesión. | `201`, `400`, `409` |
-| `POST` | `/api/auth/login` | Inicia sesión con email y contraseña. | `200`, `400`, `401` |
-| `POST` | `/api/auth/logout` | Cierra la sesión (elimina la cookie). | `200` |
-| `GET` | `/api/auth/me` | Devuelve el usuario de la sesión actual. | `200`, `401` |
+También se agregan 5 libros de ejemplo para que puedas probar el listado y los filtros.
 
-Roles:
+La cuenta de prueba tiene permisos de administrador. En cambio, los usuarios que se registran desde el formulario reciben el rol `consulta`.
 
-- `admin`: puede crear, consultar, editar y eliminar libros.
-- `consulta`: puede consultar libros y actualizar su propio estado de lectura.
-- El rol se asigna en el backend; el registro público siempre crea cuentas `consulta`.
+El seed utiliza `upsert`, por lo que puede ejecutarse varias veces sin duplicar los datos.
 
-### Libros (`/api/books`) — **todas requieren sesión**
+---
 
-| Método | Ruta | Descripción | Códigos |
-|--------|------|-------------|---------|
-| `GET` | `/api/books` | Lista libros; acepta `search`, `genre`, `page` y `pageSize`. La búsqueda revisa título y autor. | `200`, `400`, `401` |
-| `GET` | `/api/books/genres` | Devuelve géneros disponibles para filtrar. | `200`, `401` |
-| `GET` | `/api/books/:id` | Detalle de un libro. | `200`, `401`, `404` |
-| `PATCH` | `/api/books/:id/reading-status` | Actualiza el estado personal: `pendiente`, `leyendo` o `leído`. | `200`, `400`, `401`, `404` |
-| `POST` | `/api/books` | Crea un libro (solo `admin`). | `201`, `400`, `401`, `403`, `409` |
-| `PUT` | `/api/books/:id` | Actualiza un libro (solo `admin`). | `200`, `400`, `401`, `403`, `404`, `409` |
-| `DELETE` | `/api/books/:id` | Elimina un libro (solo `admin`). | `204`, `401`, `403`, `404` |
+## 5. Rutas de la API
 
-`GET /api/books` responde `{ books, pagination }`. La paginación usa `page`
-(desde 1) y `pageSize` (de 1 a 100, por defecto 10). El progreso de lectura
-se guarda por combinación usuario/libro y no se comparte con otros usuarios.
+La dirección principal de la API es:
 
-### Significado de los códigos HTTP
+```text
+http://localhost:4000/api
+```
 
-- `200` / `201` / `204`: operación correcta.
-- `400` **Bad Request**: los datos enviados no pasan la validación (por ejemplo, un año futuro o páginas ≤ 0).
-- `401` **Unauthorized**: no hay sesión válida, o las credenciales son incorrectas.
-- `403` **Forbidden**: el usuario inició sesión, pero su rol no permite esa acción.
-- `404` **Not Found**: el recurso no existe.
-- `409` **Conflict**: ya existe un registro con ese dato único (email o ISBN).
+### Autenticación
 
-### Ejemplo de cuerpo para crear/editar un libro
+Estas rutas sirven para registrar usuarios, iniciar sesión, cerrar sesión y consultar quién tiene la sesión activa.
+
+1. Registrar usuario
+- Método: POST
+- Ruta: /api/auth/register
+- Función: Registra un nuevo usuario e inicia su sesión.
+- Respuestas: 201 (creado), 400 (datos incorrectos), 409 (el usuario ya existe).
+
+2. Iniciar sesión
+- Método: POST
+- Ruta: /api/auth/login
+- Función: Permite iniciar sesión con el correo y la contraseña.
+- Respuestas: 200 (correcto), 400 (datos incorrectos), 401 (credenciales incorrectas).
+
+3. Cerrar sesión
+- Método: POST
+- Ruta: /api/auth/logout
+- Función: Cierra la sesión y elimina la cookie de autenticación.
+- Respuestas: 200 (correcto).
+
+4. Consultar usuario actual
+- Método: GET
+- Ruta: /api/auth/me
+- Función: Devuelve los datos del usuario que tiene la sesión iniciada.
+- Respuestas: 200 (correcto), 401 (no ha iniciado sesión).
+
+### Roles de usuario
+
+El sistema tiene dos roles:
+
+- **admin:** puede crear, consultar, editar y eliminar libros.
+- **consulta:** puede consultar los libros y actualizar su propio estado de lectura.
+
+El rol se asigna desde el backend. Cuando alguien se registra desde el formulario, se le asigna automáticamente el rol `consulta`.
+
+### Libros
+
+Todas las rutas de libros necesitan que el usuario haya iniciado sesión.
+
+1. Consultar libros
+- Método: GET
+- Ruta: /api/books
+- Función: Muestra los libros registrados. También permite buscar, aplicar filtros y cambiar de página.
+- Respuestas: 200 (correcto), 400 (datos incorrectos), 401 (sin sesión).
+
+2. Consultar géneros
+- Método: GET
+- Ruta: /api/books/genres
+- Función: Devuelve la lista de géneros disponibles.
+- Respuestas: 200 (correcto), 401 (sin sesión).
+
+3. Consultar un libro
+- Método: GET
+- Ruta: /api/books/:id
+- Función: Muestra los detalles de un libro por medio de su ID.
+- Respuestas: 200 (correcto), 401 (sin sesión), 404 (libro no encontrado).
+
+4. Cambiar estado de lectura
+- Método: PATCH
+- Ruta: /api/books/:id/reading-status
+- Función: Permite cambiar el estado de lectura de un libro.
+- Respuestas: 200 (correcto), 400 (datos incorrectos), 401 (sin sesión), 404 (libro no encontrado).
+
+5. Registrar un libro
+- Método: POST
+- Ruta: /api/books
+- Función: Agrega un nuevo libro. Esta acción solo puede realizarla un administrador.
+- Respuestas: 201 (creado), 400 (datos incorrectos), 401 (sin sesión), 403 (sin permisos), 409 (conflicto).
+
+6. Editar un libro
+- Método: PUT
+- Ruta: /api/books/:id
+- Función: Permite modificar la información de un libro. Solo puede hacerlo un administrador.
+- Respuestas: 200 (correcto), 400 (datos incorrectos), 401 (sin sesión), 403 (sin permisos), 404 (libro no encontrado), 409 (conflicto).
+
+7. Eliminar un libro
+- Método: DELETE
+- Ruta: /api/books/:id
+- Función: Elimina un libro del sistema. Esta acción solo puede realizarla un administrador.
+- Respuestas: 204 (eliminado correctamente), 401 (sin sesión), 403 (sin permisos), 404 (libro no encontrado).
+
+La ruta `GET /api/books` devuelve una lista de libros y la información de paginación (`books` y `pagination`).
+
+Para cambiar de página se utilizan estos parámetros:
+
+- `page`: indica el número de página. Empieza en 1.
+- `pageSize`: indica cuántos libros se muestran por página. Puede ser de 1 a 100 y su valor por defecto es 10.
+- `search`: permite buscar por título o autor.
+- `genre`: permite filtrar por género.
+
+El estado de lectura se guarda por separado para cada usuario y libro. Esto significa que cada usuario puede tener su propio progreso sin modificar el de los demás.
+
+Los estados disponibles son:
+
+- `pendiente`
+- `leyendo`
+- `leído`
+
+### ¿Qué significan los códigos de respuesta?
+
+- 200, 201, 204 – Operación correcta: Se muestran cuando la petición se realizó correctamente. Dependiendo de la operación, indican que se consultó, creó o eliminó información.
+
+- 400 – Datos incorrectos: Aparece cuando la información enviada no cumple con las validaciones del sistema.
+
+- 401 – No autorizado: Aparece cuando no hay una sesión iniciada o los datos para iniciar sesión son incorrectos.
+
+- 403 – Acceso prohibido: Ocurre cuando el usuario inició sesión, pero no tiene permiso para realizar esa acción.
+
+- 404 – No encontrado: Aparece cuando el libro o el recurso que se está buscando no existe.
+
+- 409 – Conflicto: Se muestra cuando se intenta registrar un correo o ISBN que ya se encuentra registrado.
+
+### Ejemplo de datos para registrar o editar un libro
+
+Este es un ejemplo del JSON que se puede enviar a la API:
 
 ```json
 {
@@ -180,185 +334,262 @@ se guarda por combinación usuario/libro y no se comparte con otros usuarios.
 
 ---
 
-## 6. Estructura del proyecto
+## 6. Organización de las carpetas
+
+El proyecto está dividido en dos partes principales: `backend` y `frontend`. También tiene archivos para configurar Docker.
 
 ```text
 Prueba-tecnica-Fullstack/
-├── backend/                      # API REST (Express + Prisma)
+├── backend/                      # Código del servidor y la API
 │   ├── prisma/
-│   │   ├── migrations/           # Migraciones versionadas
-│   │   ├── schema.prisma         # Modelos User y Book
-│   │   └── seed.js               # Datos de prueba (idempotente)
+│   │   ├── migrations/           # Cambios realizados a la base de datos
+│   │   ├── schema.prisma          # Modelos de usuarios y libros
+│   │   └── seed.js                # Agrega datos de prueba
 │   ├── src/
-│   │   ├── config/               # Lectura de variables de entorno y cliente Prisma
-│   │   ├── controllers/          # Capa HTTP (req/res)
-│   │   ├── errors/               # Error de negocio (AppError)
-│   │   ├── middlewares/          # Sesión (401), validación, errores y 404
-│   │   ├── repositories/         # Acceso a datos (único lugar con Prisma)
-│   │   ├── routes/               # Definición de rutas
-│   │   ├── services/             # Lógica de negocio
-│   │   ├── utils/                # Utilidades (JWT, asyncHandler)
-│   │   ├── validators/           # Esquemas de validación (Zod)
-│   │   ├── app.js                # Configuración de la app Express
-│   │   └── server.js             # Arranque del servidor
-│   ├── Dockerfile
-│   ├── docker-entrypoint.sh      # Migraciones + seed + arranque
-│   └── .env.example
-├── frontend/                     # Aplicación Next.js (App Router)
+│   │   ├── config/                # Configuración y conexión a la base de datos
+│   │   ├── controllers/           # Reciben las peticiones y envían respuestas
+│   │   ├── errors/                # Manejo de errores de la aplicación
+│   │   ├── middlewares/           # Validaciones y comprobaciones de las peticiones
+│   │   ├── repositories/          # Consultas a la base de datos
+│   │   ├── routes/                # Direcciones de la API
+│   │   ├── services/               # Lógica principal del sistema
+│   │   ├── utils/                  # Funciones de ayuda
+│   │   ├── validators/             # Reglas para validar los datos
+│   │   ├── app.js                  # Configuración de Express
+│   │   └── server.js               # Inicia el servidor
+│   ├── Dockerfile                  # Configuración de Docker para construir la imagen
+│   ├── docker-entrypoint.sh        # Prepara la base de datos e inicia la API
+│   └── .env.example                # Variables para Docker Compose
+├── frontend/                      # Código de la página web
 │   ├── src/
 │   │   ├── app/
-│   │   │   ├── (protected)/      # Rutas privadas (con guardia de sesión)
-│   │   │   │   └── books/        # Listado, detalle, crear y editar
-│   │   │   ├── login/            # Inicio de sesión
-│   │   │   ├── register/         # Registro
-│   │   │   ├── layout.tsx        # Layout raíz (incluye AuthProvider)
-│   │   │   └── page.tsx          # Redirige a /books
-│   │   ├── components/           # Componentes reutilizables (BookForm, ...)
-│   │   ├── context/              # Contexto de autenticación
-│   │   └── lib/                  # Cliente HTTP y tipos compartidos
-│   ├── Dockerfile
-│   └── .env.example
-├── docker-compose.yml            # Orquesta postgres + backend + frontend
-├── .env.example                  # Variables para Docker Compose
-└── README.md
+│   │   │   ├── (protected)/        # Páginas que necesitan iniciar sesión
+│   │   │   │   └── books/          # Listado, detalle, registro y edición de libros
+│   │   │   ├── login/              # Página para iniciar sesión
+│   │   │   ├── register/           # Página para registrarse
+│   │   │   ├── layout.tsx          # Estructura general de las páginas
+│   │   │   └── page.tsx            # Página inicial
+│   │   ├── components/             # Componentes que se pueden reutilizar
+│   │   ├── context/                # Información de la sesión del usuario
+│   │   └── lib/                    # Peticiones al backend y tipos de datos
+│   ├── Dockerfile                  # Configuración de Docker para construir la imagen
+│   └── .env.example                # Variables para Docker Compose
+├── docker-compose.yml              # Configura y conecta los servicios
+├── .env.example                    # Variables para Docker Compose
+└── README.md                       # Documentación del proyecto
 ```
 
-### Arquitectura del backend: rutas → controladores → servicios → repositorios
+### Cómo se organiza el backend
 
-Cada capa tiene **una sola responsabilidad**:
+El backend está dividido en varias carpetas para que cada parte tenga una tarea clara.
 
-1. **Rutas** (`routes/`): definen las URLs y qué middlewares aplican.
-2. **Controladores** (`controllers/`): traducen HTTP ↔ servicio (leen `req`, responden).
-3. **Servicios** (`services/`): contienen la lógica de negocio y lanzan errores (`AppError`).
-4. **Repositorios** (`repositories/`): la **única** capa que habla con PostgreSQL.
+El recorrido de una petición es el siguiente:
 
-Esta separación hace el código fácil de leer, de probar y de cambiar.
+1. **Rutas (`routes/`):** indican qué dirección se está utilizando y qué funciones se deben ejecutar.
+2. **Controladores (`controllers/`):** reciben los datos de la petición y preparan la respuesta.
+3. **Servicios (`services/`):** realizan las operaciones y aplican las reglas del sistema.
+4. **Repositorios (`repositories/`):** consultan o modifican la información de la base de datos.
+
+De esta manera, cada archivo tiene una responsabilidad y es más fácil encontrar dónde hacer cambios.
 
 ---
 
 ## 7. Variables de entorno
 
-Hay `.env.example` en **tres** niveles, cada uno documentado:
+El proyecto tiene tres archivos `.env.example`. Cada uno se utiliza para configurar una parte diferente:
 
-| Archivo | Para qué sirve |
-|---------|----------------|
-| `.env.example` (raíz) | Variables que consume **Docker Compose**. |
-| `backend/.env.example` | Ejecutar el backend **fuera** de Docker. |
-| `frontend/.env.example` | Ejecutar el frontend **fuera** de Docker. |
+- .env.example (carpeta principal): Contiene la configuración necesaria para iniciar los servicios con Docker Compose.
 
-Variables principales:
+- backend/.env.example: Contiene las variables que necesita el backend cuando se ejecuta sin Docker.
 
-| Variable | Descripción | Ejemplo |
-|----------|-------------|---------|
-| `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` | Credenciales de PostgreSQL. | `readingclub` / `readingclub_pwd` / `readingclub` |
-| `POSTGRES_PORT` | Puerto expuesto de PostgreSQL. | `5432` |
-| `BACKEND_PORT` | Puerto de la API. | `4000` |
-| `DATABASE_URL` | Cadena de conexión a PostgreSQL. | `postgresql://readingclub:readingclub_pwd@postgres:5432/readingclub?schema=public` |
-| `JWT_SECRET` | Secreto para firmar los JWT. **Cámbialo en producción.** | `una_cadena_larga_y_aleatoria` |
-| `JWT_EXPIRES_IN` | Vigencia del token. | `1d` |
-| `CORS_ORIGIN` | Origen del frontend autorizado. | `http://localhost:3000` |
-| `FRONTEND_PORT` | Puerto del frontend. | `3000` |
-| `NEXT_PUBLIC_API_URL` | URL de la API tal y como la ve el navegador. | `http://localhost:4000/api` |
+- frontend/.env.example: Contiene las variables que necesita el frontend cuando se ejecuta sin Docker.
 
-> Los archivos `.env` **reales nunca se suben al repositorio** (están en `.gitignore`).
+Estos archivos sirven como guía para crear los archivos .env con la configuración necesaria antes de iniciar el proyecto.
+
+### Variables principales
+
+Configuración de PostgreSQL
+- POSTGRES_USER: Usuario que se utiliza para acceder a PostgreSQL. Ejemplo: readingclub.
+- POSTGRES_PASSWORD: Contraseña para acceder a la base de datos. Ejemplo: readingclub_pwd.
+- POSTGRES_DB: Nombre de la base de datos. Ejemplo: readingclub.
+- POSTGRES_PORT: Puerto por el que funciona PostgreSQL. Ejemplo: 5432.
+
+Configuración del backend
+- BACKEND_PORT: Puerto donde se ejecuta el backend. Ejemplo: 4000.
+- DATABASE_URL: Dirección que utiliza el backend para conectarse a PostgreSQL. Ejemplo:
+
+postgresql://readingclub:readingclub_pwd@postgres:5432/readingclub?schema=public
+- JWT_SECRET: Clave que se utiliza para generar los tokens de sesión. Ejemplo: una_cadena_larga_y_aleatoria.
+- JWT_EXPIRES_IN: Tiempo que dura la sesión del usuario. Ejemplo: 1d (un día).
+- CORS_ORIGIN: Dirección del frontend que tiene permitido comunicarse con el backend. Ejemplo: http://localhost:3000.
+
+Configuración del frontend
+- FRONTEND_PORT: Puerto donde se ejecuta el frontend. Ejemplo: 3000.
+- NEXT_PUBLIC_API_URL: Dirección de la API que utiliza el navegador para comunicarse con el backend. Ejemplo: http://localhost:4000/api.
+
+**Importante:** los archivos `.env` reales no deben subirse a GitHub porque pueden contener contraseñas y otros datos privados. Por eso están agregados al archivo `.gitignore`.
+
+Las variables que comienzan con `NEXT_PUBLIC_` pueden verse desde el navegador. No guardes contraseñas ni claves privadas en ellas.
 
 ---
 
-## 8. Ejecutar sin Docker (opcional, para desarrollo)
+## 8. Ejecutar el proyecto sin Docker
 
-Necesitas una base de datos PostgreSQL accesible.
+Esta opción es para cuando quieras iniciar el frontend y el backend por separado.
 
-**Backend:**
+Antes de comenzar, necesitas tener PostgreSQL instalado y funcionando.
+
+### Iniciar el backend
+
+Abre una terminal y ejecuta:
 
 ```bash
 cd backend
-cp .env.example .env        # ajusta DATABASE_URL a tu PostgreSQL local
-npm install
-npx prisma migrate deploy   # aplica migraciones
-npx prisma db seed          # carga datos de prueba
-npm run dev                 # API en http://localhost:4000
 ```
 
-**Frontend** (en otra terminal):
+Copia el archivo de ejemplo:
+
+```bash
+cp .env.example .env
+```
+
+Revisa el archivo `.env` y configura `DATABASE_URL` con los datos de tu PostgreSQL local.
+
+Después instala las dependencias:
+
+```bash
+npm install
+```
+
+Aplica las migraciones para preparar las tablas de la base de datos:
+
+```bash
+npx prisma migrate deploy
+```
+
+Carga los datos de prueba:
+
+```bash
+npx prisma db seed
+```
+
+Por último, inicia el backend:
+
+```bash
+npm run dev
+```
+
+La API estará disponible en:
+
+```text
+http://localhost:4000
+```
+
+### Iniciar el frontend
+
+Abre otra terminal y ejecuta:
 
 ```bash
 cd frontend
-cp .env.example .env        # NEXT_PUBLIC_API_URL=http://localhost:4000/api
-npm install
-npm run dev                 # app en http://localhost:3000
 ```
 
----
-
-## 9. Decisiones técnicas
-
-- **JWT en cookie `httpOnly` en lugar de `localStorage`:** una cookie `httpOnly`
-  no es accesible desde JavaScript, lo que reduce el riesgo de robo del token
-  por XSS. El backend la emite y el navegador la envía sola en cada petición
-  (con `credentials: 'include'`).
-- **Contraseñas con bcrypt (10 rondas):** nunca se guarda la contraseña, solo su
-  hash. En el login se comparan con `bcrypt.compare`.
-- **Mensaje genérico en el login:** tanto si el email no existe como si la
-  contraseña es incorrecta se responde *"Email o contraseña incorrectos"*, para
-  no revelar qué emails están registrados.
-- **Campos en `snake_case`:** el esquema de Prisma usa los mismos nombres que
-  pide el enunciado (`isbn`, `titulo`, `anio_publicacion`, `paginas`, ...) para
-  no añadir capas de traducción innecesarias.
-- **Validación en el backend con Zod:** validar solo en el frontend no es
-  suficiente; el backend valida siempre y devuelve `400` con un mensaje claro
-  que el frontend muestra al usuario.
-- **`AppError` + middleware de errores centralizado:** los servicios lanzan
-  errores con su código HTTP y un único middleware los convierte en respuestas
-  JSON. Así no se repite `try/catch` por todo el código.
-- **`asyncHandler`:** Express 4 no captura errores de funciones `async`
-  automáticamente; este pequeño helper reenvía los errores al middleware.
-- **Protección de rutas en dos capas:** el backend responde `401` si no hay
-  sesión, y el frontend (layout `(protected)`) redirige a `/login` si no hay
-  usuario.
-- **Renderizado en el cliente:** la sesión vive en una cookie del dominio del
-  backend; por eso el frontend obtiene los datos desde el navegador (con
-  `credentials: 'include'`) en lugar de hacerlo en el servidor de Next.js.
-- **Migraciones y seed automáticos:** el `docker-entrypoint.sh` del backend
-  aplica `prisma migrate deploy` y ejecuta el seed antes de arrancar la API,
-  de modo que `docker compose up --build` deja todo listo sin pasos manuales.
-- **Persistencia con volumen con nombre:** `postgres_data` conserva los datos
-  aunque se destruyan y se vuelvan a crear los contenedores.
-- **Build multi-stage y usuario sin privilegios:** las imágenes de Docker son
-  más pequeñas y el frontend se ejecuta con un usuario no root.
-
----
-
-## 10. Flujo de trabajo con Git (GitHub Flow)
-
-El desarrollo se hizo en ramas cortas con **Conventional Commits**
-(`feat:`, `fix:`, `chore:`, `docs:`), integrándolas a `main` mediante Pull
-Requests:
-
-| Rama | Contenido |
-|------|-----------|
-| `main` | Rama principal y estable. |
-| `chore/docker` | Estructura inicial, Dockerfiles y `docker-compose`. |
-| `feature/auth` | Autenticación (registro, login, logout, rutas protegidas). |
-| `feature/crud-libros` | CRUD de libros (backend y frontend). |
-| `docs/readme` | Documentación del proyecto. |
-
----
-
-## 11. Comandos útiles
+Copia el archivo de ejemplo:
 
 ```bash
-# Levantar todo
+cp .env.example .env
+```
+
+Revisa que `NEXT_PUBLIC_API_URL` tenga esta dirección:
+
+```text
+http://localhost:4000/api
+```
+
+Instala las dependencias:
+
+```bash
+npm install
+```
+
+Inicia el frontend:
+
+```bash
+npm run dev
+```
+
+La página estará disponible en:
+
+```text
+http://localhost:3000
+```
+
+---
+
+## 9. Algunas decisiones del proyecto
+
+En esta sección explico algunas decisiones que se tomaron durante el desarrollo.
+
+- **Sesión con JWT y cookie `httpOnly`:** se utiliza una cookie para guardar el token de sesión. Al ser `httpOnly`, JavaScript no puede leerla directamente desde el navegador.
+- **Contraseñas con bcrypt:** las contraseñas no se guardan directamente. Se guarda una versión protegida (hash) y, al iniciar sesión, se compara con la contraseña ingresada. Se utilizan 10 rondas.
+- **Mensaje de inicio de sesión:** si el correo no existe o la contraseña es incorrecta, se muestra el mismo mensaje: "Email o contraseña incorrectos". Así no se indica si un correo está registrado.
+- **Nombres de campos:** se utilizan nombres como `isbn`, `titulo`, `anio_publicacion` y `paginas` para mantener los mismos nombres en el proyecto.
+- **Validación con Zod:** el backend revisa los datos antes de guardarlos. Si encuentra un dato incorrecto, responde con un error `400` y un mensaje que el frontend puede mostrar.
+- **Manejo de errores:** se utiliza `AppError` junto con un middleware para responder los errores desde un solo lugar.
+- **asyncHandler:** se utiliza porque Express 4 necesita ayuda para enviar los errores de las funciones asíncronas al middleware de errores.
+- **Protección de páginas:** el backend revisa que exista una sesión válida. Además, el frontend redirige al usuario a `/login` cuando no ha iniciado sesión.
+- **Consulta de la sesión:** el frontend obtiene los datos del usuario desde el navegador usando la cookie de sesión.
+- **Migraciones y datos de prueba:** al iniciar con Docker, el backend prepara la base de datos y carga los datos de prueba automáticamente.
+- **Datos guardados en Docker:** PostgreSQL utiliza un volumen llamado `postgres_data`. Esto permite conservar los datos aunque se eliminen los contenedores.
+- **Imágenes de Docker:** se utilizan varias etapas para crear las imágenes y el frontend se ejecuta con un usuario que no es administrador del sistema.
+
+---
+
+## 10. Cómo se trabajó con Git
+
+Durante el desarrollo se utilizaron ramas para separar los cambios y mantener organizada la rama principal `main`.
+
+También se utilizaron mensajes de commit con prefijos para identificar el tipo de cambio, por ejemplo:
+
+- `feat:` para agregar una función.
+- `fix:` para corregir un error.
+- `chore:` para tareas de configuración.
+- `docs:` para cambios en la documentación.
+
+Las ramas utilizadas fueron:
+
+main: Contiene la versión principal del proyecto.
+
+chore/docker: Contiene los archivos y la configuración inicial de Docker.
+
+feature/auth: Incluye el registro, inicio y cierre de sesión, así como la protección de páginas.
+
+feature/crud-libros: Contiene las funciones para crear, consultar, editar y eliminar libros.
+
+docs/readme: Se utilizó para trabajar en la documentación del proyecto.
+
+Los cambios se integraron a `main` mediante Pull Requests.
+
+---
+
+## 11. Comandos que pueden ser útiles
+
+Estos son algunos comandos que puedes utilizar para trabajar con Docker Compose:
+
+```bash
+# Iniciar todo el proyecto
 docker compose up --build
 
-# Ver logs de un servicio
+# Ver los mensajes del backend
 docker compose logs -f backend
 
-# Detener
+# Detener los contenedores
 docker compose down
 
-# Detener y borrar los datos
+# Detener los contenedores y borrar los datos de la base de datos
 docker compose down -v
 
-# Recrear solo la base de datos desde cero
+# Iniciar el proyecto nuevamente desde cero
 docker compose down -v && docker compose up --build
 ```
+
+Recuerda que `docker compose down -v` borra el volumen de la base de datos. Si lo ejecutas, perderás los datos que se habían guardado.

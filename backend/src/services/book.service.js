@@ -2,12 +2,14 @@ import { AppError } from '../errors/AppError.js';
 import * as bookRepository from '../repositories/book.repository.js';
 
 /**
- * Servicio de libros (capa de lógica de negocio).
+ * Servicio de libros.
  *
- * Reglas implementadas:
- *  - El ISBN es único: si ya existe, se responde 409.
- *  - Un libro inexistente no se puede consultar, editar ni borrar: 404.
- *  - La sinopsis vacía se guarda como `null`.
+ * Aquí se encuentra la lógica que controla las operaciones de los libros.
+ *
+ * Reglas principales:
+ * - No permite registrar dos libros con el mismo ISBN.
+ * - Verifica que el libro exista antes de consultarlo, editarlo o eliminarlo.
+ * - Si la sinopsis está vacía, la guarda como `null`.
  */
 
 /**

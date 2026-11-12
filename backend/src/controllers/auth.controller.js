@@ -8,13 +8,14 @@ import {
 } from '../utils/jwt.js';
 
 /**
- * Controlador de autenticación (capa HTTP).
+ * Controlador de autenticación.
  *
- * Su trabajo es traducir entre HTTP y el servicio: leer datos de `req`, llamar
- * al servicio y construir la respuesta. La lógica de negocio NO vive aquí.
+ * Se encarga de recibir las solicitudes, obtener los datos enviados
+ * por el usuario, llamar al servicio correspondiente y devolver
+ * una respuesta. La lógica principal se encuentra en los servicios.
  *
- * `asyncHandler` captura cualquier error async y lo envía al middleware de
- * errores, para no repetir `try/catch` en cada función.
+ * `asyncHandler` se encarga de manejar los errores automáticamente,
+ * evitando tener que escribir `try/catch` en cada función.
  */
 
 /** Escribe la cookie con el token del usuario y responde con sus datos públicos. */

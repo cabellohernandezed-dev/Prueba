@@ -3,11 +3,14 @@ import { AppError } from '../errors/AppError.js';
 import * as userRepository from '../repositories/user.repository.js';
 
 /**
- * Servicio de autenticación (capa de lógica de negocio).
+ * Servicio de autenticación.
  *
- * Aquí viven las reglas: hashear contraseñas, comparar credenciales, comprobar
- * si un email ya está registrado, etc. No sabe nada de HTTP (no hay `req`/`res`)
- * ni de SQL (eso es del repositorio). Es código fácil de leer y de probar.
+ * Aquí se encuentra toda la lógica relacionada con el inicio de sesión
+ * y el registro de usuarios, como encriptar contraseñas, verificar
+ * credenciales y comprobar si un correo ya está registrado.
+ *
+ * No se encarga de recibir peticiones ni de consultar directamente
+ * la base de datos, esas tareas corresponden a otras partes del proyecto.
  */
 
 /** Número de rondas de bcrypt. Más rondas = más seguro, pero más lento. */

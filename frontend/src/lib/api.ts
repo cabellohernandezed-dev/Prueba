@@ -1,10 +1,11 @@
 /**
  * Cliente HTTP del frontend.
  *
- * Centraliza TODAS las llamadas a la API del backend para no repetir la URL
- * base ni la configuración de las peticiones. Además:
- *  - envía la cookie de sesión (`credentials: 'include'`),
- *  - convierte las respuestas de error en excepciones con mensaje legible.
+ * Se encarga de realizar todas las peticiones al backend desde un solo lugar,
+ * evitando repetir la dirección de la API y la configuración.
+ *
+ * También envía la cookie de sesión y muestra mensajes claros
+ * cuando ocurre algún error en las peticiones.
  */
 
 const API_URL =
@@ -22,8 +23,11 @@ export class ApiError extends Error {
 }
 
 /**
- * Realiza una petición a la API y devuelve el JSON ya parseado.
- * Lanza `ApiError` si la respuesta no es correcta.
+ * Envía una petición al backend y devuelve la respuesta
+ * en formato JSON.
+ *
+ * Si ocurre algún error, genera un `ApiError` con el mensaje
+ * correspondiente.
  */
 export async function apiFetch<T>(
   path: string,

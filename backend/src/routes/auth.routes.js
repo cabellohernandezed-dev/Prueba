@@ -5,9 +5,11 @@ import { validate } from '../middlewares/validate.middleware.js';
 import { loginSchema, registerSchema } from '../validators/auth.validator.js';
 
 /**
- * Rutas de autenticación (prefijo /api/auth).
+ * Repositorio de usuarios.
  *
- * Cada ruta encadena: [validación] -> [middleware de sesión si aplica] -> controlador.
+ * Se encarga de realizar todas las consultas a la base de datos.
+ * Así, si en el futuro cambiamos Prisma por otra herramienta,
+ * solo tendremos que modificar este archivo sin afectar los servicios.
  */
 export const authRouter = Router();
 

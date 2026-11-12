@@ -1,14 +1,16 @@
 # =============================================================================
-# Frontend — Next.js (App Router) compilado en modo "standalone"
+# Frontend: aplicación web desarrollada con Next.js.
+# Utiliza el sistema App Router para organizar las páginas y rutas.
+# Se compila en modo "standalone" para facilitar su ejecución con Docker.
 # =============================================================================
 
-# ---- 1) Dependencias --------------------------------------------------------
+# 1) Dependencias 
 FROM node:20-alpine AS dependencies
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-# ---- 2) Compilación ---------------------------------------------------------
+# 2) Compilación 
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
@@ -19,7 +21,7 @@ ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
-# ---- 3) Runtime (imagen final mínima) ---------------------------------------
+# 3) Runtime (imagen final mínima) 
 FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production

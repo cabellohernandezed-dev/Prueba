@@ -1,9 +1,9 @@
 #!/bin/sh
 # -----------------------------------------------------------------------------
-# Punto de entrada del contenedor del backend.
-# Se ejecuta al arrancar el contenedor y deja la base de datos lista antes de
-# levantar la API. El seed es idempotente, por lo que es seguro ejecutarlo
-# en cada arranque.
+# Archivo que se ejecuta cuando inicia el contenedor del backend.
+# Primero prepara la base de datos y después inicia la API.
+# También ejecuta el seed para agregar los datos iniciales.
+# Puede ejecutarse cada vez que inicia el contenedor sin duplicar los datos.
 # -----------------------------------------------------------------------------
 set -e
 

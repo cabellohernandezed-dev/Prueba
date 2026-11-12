@@ -1,6 +1,9 @@
 /**
  * Tipos compartidos del frontend.
- * Reflejan exactamente lo que devuelve la API del backend.
+ *
+ * Define los tipos de datos que utiliza la aplicación.
+ * Estos tipos coinciden con la información que recibe
+ * del backend para mantener una comunicación correcta.
  */
 
 export type User = {

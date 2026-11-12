@@ -1,9 +1,4 @@
--- =============================================================================
--- Migración inicial: crea las tablas "users" y "books".
--- Generada a partir de prisma/schema.prisma.
--- =============================================================================
 
--- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "nombre" TEXT NOT NULL,
@@ -14,7 +9,7 @@ CREATE TABLE "users" (
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
+
 CREATE TABLE "books" (
     "id" TEXT NOT NULL,
     "isbn" TEXT NOT NULL,

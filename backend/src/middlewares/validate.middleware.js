@@ -1,12 +1,14 @@
 import { AppError } from '../errors/AppError.js';
 
 /**
- * Middleware genérico de validación.
+ * Middleware para validar los datos recibidos.
  *
- * Recibe un esquema de Zod y comprueba `req.body`. Si los datos son válidos,
- * sustituye `req.body` por los datos ya validados/normalizados y continúa.
- * Si no, corta la petición con un error 400 y el primer mensaje de error
- * (pensado para mostrarse tal cual al usuario en el frontend).
+ * Utiliza un esquema de Zod para comprobar que los datos enviados
+ * sean correctos. Si todo está bien, guarda los datos validados
+ * y continúa con la petición.
+ *
+ * Si encuentra algún error, detiene la petición y devuelve un
+ * mensaje indicando qué dato es incorrecto.
  */
 export function validate(schema) {
   return (req, _res, next) => {

@@ -1,11 +1,11 @@
 import { prisma } from '../config/prisma.js';
 
 /**
- * Repositorio de usuarios (capa de acceso a datos).
+ * Repositorio de usuarios.
  *
- * Es la ÚNICA capa que habla con la base de datos. Así, si mañana cambiamos
- * Prisma por otro ORM, solo hay que tocar este archivo: los servicios no se
- * enteran.
+ * Se encarga de realizar todas las consultas a la base de datos.
+ * Así, si en el futuro cambiamos Prisma por otra herramienta,
+ * solo tendremos que modificar este archivo sin afectar los servicios.
  */
 
 /** Busca un usuario por su email. Devuelve `null` si no existe. */

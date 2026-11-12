@@ -8,24 +8,27 @@ import { authRouter } from './routes/auth.routes.js';
 import { bookRouter } from './routes/book.routes.js';
 
 /**
- * Fábrica de la aplicación Express.
+ * Configuración de la aplicación Express.
  *
- * Se separa en su propio módulo (en lugar de crear el servidor directamente)
- * para poder importarla en pruebas sin abrir un puerto.
+ * Aquí se prepara la aplicación y se configuran los elementos
+ * necesarios para que funcione correctamente.
  *
- * El ORDEN de los middlewares es importante:
- *   1. cors        -> permite peticiones desde el frontend (y comparte cookies).
- *   2. json        -> parsea el cuerpo JSON de las peticiones.
- *   3. cookieParser-> parsea las cookies (de aquí sale el token de sesión).
- *   4. rutas       -> endpoints de la API.
- *   5. 404         -> rutas no encontradas.
- *   6. errores     -> SIEMPRE al final.
+ * El orden de ejecución es el siguiente:
+ * 1. cors: permite la comunicación con el frontend.
+ * 2. json: permite recibir datos en formato JSON.
+ * 3. cookieParser: permite leer las cookies del navegador.
+ * 4. rutas: define las direcciones de la API.
+ * 5. 404: detecta las rutas que no existen.
+ * 6. errores: se encarga de manejar los errores de la aplicación.
+ *
+ * Se mantiene separado del servidor para poder utilizarlo
+ * en las pruebas sin necesidad de iniciar un puerto.
  */
 export function createApp() {
   const app = express();
 
-  // `credentials: true` es necesario para que el navegador envíe/guarde la
-  // cookie de sesión en peticiones desde otro origen (el frontend).
+// `credentials: true` permite que el navegador envíe y reciba
+// la cookie de sesión cuando el frontend se comunica con el backend.
   app.use(cors({ origin: env.corsOrigin, credentials: true }));
   app.use(express.json());
   app.use(cookieParser());

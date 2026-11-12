@@ -1,9 +1,11 @@
 import { prisma } from '../config/prisma.js';
 
 /**
- * Repositorio de libros (capa de acceso a datos).
+ * Repositorio de libros.
  *
- * Única capa que consulta la base de datos con Prisma.
+ * Se encarga de realizar las consultas a la base de datos utilizando
+ * Prisma. Es la única parte del proyecto que accede directamente
+ * a la base de datos para obtener, guardar, actualizar o eliminar libros.
  */
 
 /** Busca el catálogo con filtros y el estado de lectura del usuario actual. */

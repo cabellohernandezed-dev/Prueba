@@ -5,8 +5,10 @@ import type { FormEvent } from 'react';
 import { ErrorMessage } from '@/components/ErrorMessage';
 
 /**
- * Valores que el formulario entrega al guardar.
- * `anio_publicacion` y `paginas` ya vienen convertidos a número.
+ * Datos que se envían al guardar el formulario.
+ *
+ * Los campos `anio_publicacion` y `paginas` ya están
+ * convertidos a números para evitar errores al procesarlos.
  */
 export type BookFormValues = {
   isbn: string;

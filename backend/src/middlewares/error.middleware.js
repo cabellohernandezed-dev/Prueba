@@ -1,13 +1,13 @@
 import { AppError } from '../errors/AppError.js';
 
 /**
- * Middleware de errores centralizado.
+ * Middleware para manejar todos los errores de la aplicación.
  *
- * Express envía aquí cualquier error lanzado en controladores o servicios.
- * - Si es un `AppError` (error de negocio) responde con su código HTTP y su mensaje.
- * - Cualquier otro error es inesperado: se registra en consola y se responde 500.
+ * Recibe los errores que ocurren en los controladores o servicios.
+ * Si el error es conocido, responde con su código y mensaje correspondiente.
+ * Si es un error inesperado, lo muestra en consola y responde con un error 500.
  *
- * Debe declararse SIEMPRE al final, después de todas las rutas.
+ * Debe colocarse al final, después de todas las rutas.
  */
 export function errorHandler(err, _req, res, _next) {
   if (err instanceof AppError) {

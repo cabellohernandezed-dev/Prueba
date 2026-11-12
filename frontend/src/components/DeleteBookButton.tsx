@@ -13,8 +13,11 @@ type DeleteBookButtonProps = {
 };
 
 /**
- * Botón de eliminar libro con confirmación previa.
- * Reutilizable tanto en el listado como en el detalle.
+ * Botón para eliminar un libro.
+ *
+ * Antes de eliminarlo, solicita una confirmación al usuario.
+ * Se puede utilizar tanto en la lista de libros como en
+ * la página de detalles de cada libro.
  */
 export function DeleteBookButton({
   bookId,

@@ -5,9 +5,10 @@ import { AUTH_COOKIE_NAME, verifyToken } from '../utils/jwt.js';
 /**
  * Middleware que protege las rutas privadas.
  *
- * Lee el JWT de la cookie httpOnly. Si no hay token, o es inválido/expirado,
- * responde con HTTP 401. Si es válido, deja los datos del usuario en
- * `req.user` para que los controladores puedan usarlos.
+ * Verifica que el usuario tenga un token válido para acceder.
+ * Si no tiene token o este ha expirado, bloquea el acceso.
+ * Si el token es válido, guarda los datos del usuario en `req.user`
+ * para que puedan utilizarse en el resto de la aplicación.
  */
 export async function requireAuth(req, _res, next) {
   const token = req.cookies?.[AUTH_COOKIE_NAME];

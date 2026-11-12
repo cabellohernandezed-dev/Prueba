@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Genera una build mínima y autocontenida: ideal para Docker, ya que la
-  // imagen final solo copia lo estrictamente necesario.
+  // Genera una versión ligera de la aplicación con los archivos necesarios
+// para ejecutarla en Docker, evitando incluir archivos innecesarios.
   output: 'standalone',
 };
 

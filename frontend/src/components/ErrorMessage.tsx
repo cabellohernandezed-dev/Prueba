@@ -1,6 +1,9 @@
 /**
- * Mensaje de error reutilizable.
- * Se usa en formularios y páginas para mostrar errores de forma consistente.
+ * Componente para mostrar mensajes de error.
+ *
+ * Se puede utilizar en diferentes partes de la aplicación,
+ * como formularios y páginas, para mostrar los errores
+ * de manera clara y uniforme.
  */
 export function ErrorMessage({ message }: { message: string }) {
   return (

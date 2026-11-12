@@ -1,12 +1,13 @@
-# Normaliza los finales de línea a LF en el repositorio.
-# Esto evita errores tipo "/bin/sh^M" en scripts .sh ejecutados dentro de Docker
-# cuando el proyecto se edita en Windows.
+# Configura los archivos del proyecto para utilizar el formato de saltos de línea LF.
+# Esto evita errores al ejecutar scripts .sh dentro de Docker,
+# especialmente cuando el proyecto se edita desde Windows.
 * text=auto eol=lf
 
-# Scripts de shell: siempre LF
+# Los scripts de shell siempre deben utilizar el formato LF
+# para evitar problemas al ejecutarlos.
 *.sh text eol=lf
 
-# Archivos binarios
+# Archivos que no son de texto, como imágenes, videos y ejecutables.
 *.png binary
 *.ico binary
 *.woff binary

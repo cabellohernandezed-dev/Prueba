@@ -2,8 +2,11 @@ import * as bookService from '../services/book.service.js';
 import { asyncHandler } from '../utils/async-handler.js';
 
 /**
- * Controlador de libros (capa HTTP).
- * Traduce entre HTTP y el servicio; no contiene lógica de negocio.
+ * Controlador de libros.
+ *
+ * Se encarga de recibir las solicitudes, enviar los datos al servicio
+ * correspondiente y devolver la respuesta. La lógica del funcionamiento
+ * de los libros se encuentra en los servicios.
  */
 
 /** GET /api/books — lista todos los libros. */

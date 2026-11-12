@@ -1,10 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 
 /**
- * Cliente único de Prisma (patrón singleton).
- *
- * Se exporta una instancia compartida para que toda la aplicación use la misma
- * conexión a PostgreSQL. El acceso a datos SIEMPRE pasa por aquí (a través de
- * los repositorios), nunca desde los controladores.
+ * Creamos una única instancia de Prisma para que toda la aplicación
+ * utilice la misma conexión a PostgreSQL. Así evitamos crear conexiones
+ * innecesarias y centralizamos el acceso a la base de datos mediante
+ * los repositorios.
  */
 export const prisma = new PrismaClient();

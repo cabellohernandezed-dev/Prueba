@@ -14,10 +14,12 @@ import type { User } from '@/lib/types';
 /**
  * Contexto de autenticación.
  *
- * Guarda en memoria el usuario de la sesión actual y expone las acciones
- * (login, register, logout). Al montar, pregunta al backend quién es el
- * usuario (`/auth/me`) usando la cookie httpOnly; por eso `isLoading` empieza
- * en `true`.
+ * Guarda los datos del usuario que ha iniciado sesión y permite
+ * realizar acciones como iniciar sesión, registrarse y cerrar sesión.
+ *
+ * Al iniciar la aplicación, consulta al backend para comprobar
+ * si existe una sesión activa. Mientras obtiene esa información,
+ * `isLoading` permanece en `true`.
  */
 
 type AuthContextValue = {

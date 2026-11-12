@@ -16,10 +16,11 @@ import {
 } from '../validators/book.validator.js';
 
 /**
- * Rutas de libros (prefijo /api/books).
+ * Rutas de libros.
  *
- * TODAS las rutas están protegidas con `requireAuth`: si no hay sesión válida,
- * se responde 401 antes de llegar al controlador.
+ * Aquí se definen las direcciones para realizar las operaciones
+ * relacionadas con los libros. Todas requieren que el usuario
+ * haya iniciado sesión para poder acceder.
  */
 export const bookRouter = Router();
 

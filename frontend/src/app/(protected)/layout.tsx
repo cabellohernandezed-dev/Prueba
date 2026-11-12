@@ -6,11 +6,14 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 
 /**
- * Layout de las rutas protegidas.
+ * Diseño de las páginas protegidas.
  *
- * Mientras `isLoading` es true esperamos a saber si hay sesión. Si no la hay,
- * redirigimos a /login. Si la hay, mostramos la cabecera y el contenido.
- * (Todas las páginas del grupo `(protected)` pasan por aquí.)
+ * Mientras se verifica si el usuario ha iniciado sesión,
+ * se espera antes de mostrar el contenido.
+ * Si no hay una sesión activa, se redirige al usuario al inicio de sesión.
+ * Si la sesión es válida, se muestra la cabecera y el contenido de la página.
+ *
+ * Todas las páginas dentro de `(protected)` utilizan esta configuración.
  */
 export default function ProtectedLayout({
   children,

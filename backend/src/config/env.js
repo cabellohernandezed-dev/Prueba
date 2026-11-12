@@ -3,9 +3,9 @@ import 'dotenv/config';
 /**
  * Configuración centralizada del backend.
  *
- * Leemos las variables de entorno UNA sola vez y fallamos rápido si falta
- * alguna crítica. Así el resto del código nunca tiene que lidiar con valores
- * indefinidos ni dispersar process.env por todo el proyecto.
+ * Leemos las variables de entorno al iniciar el programa y verificamos que 
+ * las necesarias estén configuradas. Si falta alguna, mostramos un error desde el principio. Así evitamos problemas con 
+ * valores vacíos o indefinidos en el resto del proyecto.
  */
 
 function required(name) {
